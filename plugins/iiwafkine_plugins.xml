@@ -1,0 +1,9 @@
+<library path="lib/libiiwa_fkine_nodelet">
+  <class name="sun_iiwa_fri_nodes/IIWA_FkineNodelet"
+     type="sun::iiwa::IIWA_FkineNodelet"
+     base_class_type="nodelet::Nodelet">
+    <description>
+     Nodelet IIWA_FkineNodelet
+    </description>  
+    </class>
+</library>

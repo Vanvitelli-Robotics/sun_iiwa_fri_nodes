@@ -1,0 +1,9 @@
+<library path="lib/libiiwa_clik_nodelet">
+  <class name="sun_iiwa_fri_nodes/IIWA_ClikNodelet"
+     type="sun::iiwa::IIWAClikNodelet"
+     base_class_type="nodelet::Nodelet">
+    <description>
+     Nodelet IIWA_ClikNodelet
+    </description>  
+    </class>
+</library>
