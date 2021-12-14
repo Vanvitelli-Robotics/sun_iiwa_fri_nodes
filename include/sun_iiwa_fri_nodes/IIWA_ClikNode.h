@@ -67,9 +67,9 @@ public:
       b_joint_state_arrived = false;
     }
 
-    // if (b_joint_state_arrived) {
-    //   return qR;
-    // }
+    if (b_joint_state_arrived) {
+      return qR;
+    }
 
     boost::shared_ptr<sun_iiwa_fri::IIWACommand const> msg =
         ros::topic::waitForMessage<sun_iiwa_fri::IIWACommand>(
