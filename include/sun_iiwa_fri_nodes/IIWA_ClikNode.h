@@ -1,8 +1,8 @@
 #ifndef IIWA_CLIK_NODE
 #define IIWA_CLIK_NODE
 
-#include "sun_iiwa_fri/IIWACommand.h"
 #include "ros/ros.h"
+#include "sun_iiwa_fri/IIWACommand.h"
 #include "sun_robot_lib/Robots/LBRiiwa7.h"
 #include "sun_robot_ros/ClikNode.h"
 
@@ -22,7 +22,7 @@ public:
                  nh_for_parmas) {
 
     nh_for_parmas.param("joint_state_topic", joint_state_topic_str_,
-                        std::string("/iiwa/state/joint_state"));
+                        std::string("/iiwa/state/commanded_joint"));
     nh_for_parmas.param("joint_command_topic", joint_command_topic_str_,
                         std::string("/iiwa/command/joint_position"));
 
@@ -47,15 +47,14 @@ public:
 
   TooN::Vector<7> qR;
   volatile bool b_joint_state_arrived = false;
-  void
-  joint_position_cb(const sensor_msgs::JointState::ConstPtr &joi_state_msg) {
-    qR[0] = joi_state_msg->position[0];
-    qR[1] = joi_state_msg->position[1];
-    qR[2] = joi_state_msg->position[2];
-    qR[3] = joi_state_msg->position[3];
-    qR[4] = joi_state_msg->position[4];
-    qR[5] = joi_state_msg->position[5];
-    qR[6] = joi_state_msg->position[6];
+  void joint_position_cb(const sun_iiwa_fri::IIWACommandPtr &joi_state_msg) {
+    qR[0] = joi_state_msg->joint_position[0];
+    qR[1] = joi_state_msg->joint_position[1];
+    qR[2] = joi_state_msg->joint_position[2];
+    qR[3] = joi_state_msg->joint_position[3];
+    qR[4] = joi_state_msg->joint_position[4];
+    qR[5] = joi_state_msg->joint_position[5];
+    qR[6] = joi_state_msg->joint_position[6];
     b_joint_state_arrived = true;
   }
 
@@ -68,19 +67,42 @@ public:
       b_joint_state_arrived = false;
     }
 
-    ros::Time t0 = ros::Time::now();
-    while (ros::ok() && !b_joint_state_arrived) {
-      spinOnce(ros::WallDuration(0.1));
-      if ((ros::Time::now() - t0) > ros::Duration(1.0)) {
-        joint_position_sub_ = nh_.subscribe(
-            joint_state_topic_str_, 1, &IIWAClikNode::joint_position_cb, this);
-        return getJointPositionRobot(wait_new_sample);
-      }
-    }
+    // if (b_joint_state_arrived) {
+    //   return qR;
+    // }
 
-    if (wait_new_sample) {
-      ROS_INFO_STREAM("IIWA joit position arrived!");
+    boost::shared_ptr<sun_iiwa_fri::IIWACommand const> msg =
+        ros::topic::waitForMessage<sun_iiwa_fri::IIWACommand>(
+            joint_state_topic_str_, nh_, ros::Duration(1.0));
+    if (!msg) {
+      ROS_ERROR_STREAM("getJointPositionRobot NO MSG!");
+      exit(-1);
     }
+    qR[0] = msg->joint_position[0];
+    qR[1] = msg->joint_position[1];
+    qR[2] = msg->joint_position[2];
+    qR[3] = msg->joint_position[3];
+    qR[4] = msg->joint_position[4];
+    qR[5] = msg->joint_position[5];
+    qR[6] = msg->joint_position[6];
+    b_joint_state_arrived = true;
+
+    // ros::Time t0 = ros::Time::now();
+    // while (ros::ok() && !b_joint_state_arrived) {
+    //   spinOnce(ros::WallDuration(0.1));
+    //   if ((ros::Time::now() - t0) > ros::Duration(1.0)) {
+    //     joint_position_sub_ = nh_.subscribe(
+    //         joint_state_topic_str_, 1, &IIWAClikNode::joint_position_cb,
+    //         this);
+    //     t0 = ros::Time::now();
+    //     ROS_INFO_STREAM("IIWA wait new joint position...");
+    //     // return getJointPositionRobot(wait_new_sample);
+    //   }
+    // }
+
+    // if (wait_new_sample) {
+    //   ROS_INFO_STREAM("IIWA joit position arrived!");
+    // }
 
     return qR;
   }
