@@ -1,0 +1,27 @@
+- git:
+    local-name: lbr_fri
+    uri: git@github.com:Vanvitelli-Robotics/lbr_fri.git
+- git:
+    local-name: ros_toon
+    uri: git@github.com:marcocostanzo/ros_toon.git
+- git:
+    local-name: sun_iiwa_fri
+    uri: git@github.com:Vanvitelli-Robotics/sun_iiwa_fri.git
+- git:
+    local-name: sun_iiwa_fri_nodes
+    uri: git@github.com:Vanvitelli-Robotics/sun_iiwa_fri_nodes.git
+- git:
+    local-name: sun_math_toolbox
+    uri: git@github.com:marcocostanzo/sun_math_toolbox.git
+- git:
+    local-name: sun_robot_lib
+    uri: git@github.com:marcocostanzo/sun_robot_lib.git
+- git:
+    local-name: sun_robot_ros
+    uri: git@github.com:marcocostanzo/sun_robot_ros.git
+- git:
+    local-name: sun_ros_msgs
+    uri: git@github.com:marcocostanzo/sun_ros_msgs.git
+- git:
+    local-name: sun_traj_lib
+    uri: git@github.com:marcocostanzo/sun_traj_lib.git
