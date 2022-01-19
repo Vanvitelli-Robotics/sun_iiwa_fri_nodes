@@ -1,0 +1,49 @@
+<launch>
+
+    <arg name="use_realtime" default="true" />
+
+    <arg name="sample_time" default="0.003" />
+
+    <arg name="nodelet_name" default="iiwa_nodelet_cart" />
+
+    <arg name="bringup_joint_traj_server" default="true" />
+
+    <arg name="bringup_cartesian_traj_server" default="true" />
+
+    <arg name="bringup_fkine_server" default="false" />
+
+    <arg name="bringup_clik_server" default="true" />
+
+    <arg name="bringup_fri_driver" default="true" />
+
+    <arg name="clik_error_gain" default="0.5" />
+
+    <arg name="dls_joint_speed_saturation" default="3.0" />
+
+    <arg name="second_obj_gain" default="0.0" />
+
+    <arg name="joint_target_robot" default="[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]" />
+
+    <arg name="joint_weights" default="[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]" />
+
+    <arg name="n_T_e_position" default="[0.0, 0.0, 0.0]" />
+    <arg name="n_T_e_quaternion" default="[1.0, 0.0, 0.0, 0.0]" />
+
+    <arg name="rate" value="$(eval 1.0/0.003)" />
+
+    <node pkg="nodelet" type="nodelet" name="$(arg nodelet_name)" args="manager" output="screen"/>
+
+    <!-- Cart Traj -->
+    <node if="$(arg bringup_cartesian_traj_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="cartesian_traj_nodelet" args="load sun_robot_ros/CartesianTrajectoryServerNodelet /$(arg nodelet_name)" output="screen">
+        <param name="publish_on_pose_twist" value="true" />
+
+        <param name="pose_twist_out_topic" value="clik/desired_pose_twist" />
+
+        <param name="pose_out_topic" value="clik/desired_pose" />
+        <param name="twist_out_topic" value="clik/desired_twist" />
+
+        <param name="action_name" value="cartesian_traj_action" />
+        <param name="use_realtime" value="$(arg use_realtime)" />
+    </node>
+
+</launch>

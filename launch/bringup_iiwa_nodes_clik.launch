@@ -1,10 +1,10 @@
 <launch>
 
-    <arg name="use_realtime" default="false" />
+    <arg name="use_realtime" default="true" />
 
     <arg name="sample_time" default="0.003" />
 
-    <arg name="nodelet_name" default="iiwa_nodelet" />
+    <arg name="nodelet_name" default="iiwa_nodelet_clik" />
 
     <arg name="bringup_joint_traj_server" default="true" />
 
@@ -29,38 +29,11 @@
     <arg name="n_T_e_position" default="[0.0, 0.0, 0.0]" />
     <arg name="n_T_e_quaternion" default="[1.0, 0.0, 0.0, 0.0]" />
 
-    <arg name="rate" value="$(eval 1.0/arg('sample_time'))" />
+    <arg name="rate" value="$(eval 1.0/0.003)" />
 
     <node pkg="nodelet" type="nodelet" name="$(arg nodelet_name)" args="manager" output="screen"/>
 
-    <!-- Driver -->
-    <node if="$(arg bringup_fri_driver)" ns="iiwa" pkg="nodelet" type="nodelet" name="fri_driver" args="load sun_iiwa_fri/FRIDriverNodelet /$(arg nodelet_name)" output="screen">
-        <param name="sample_time" value="$(arg sample_time)" />
-        <param name="use_realtime" value="$(arg use_realtime)" />
-    </node>
-
-    <!-- Traj Server -->
-    <node if="$(arg bringup_joint_traj_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="joint_trajectory_server" args="load sun_robot_ros/JointTrajectoryServerNodelet /$(arg nodelet_name)" output="screen">
-        <param name="traj_out_topic" value="/iiwa/command/joint_state" />
-        <param name="action_name" value="joint_traj_action" />
-        <param name="use_realtime" value="$(arg use_realtime)" />
-    </node>
-
-    <!-- Cart Traj -->
-    <node if="$(arg bringup_cartesian_traj_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="cartesian_traj_nodelet" args="load sun_robot_ros/CartesianTrajectoryServerNodelet /$(arg nodelet_name)" output="screen">
-        <param name="publish_on_pose_twist" value="true" />
-
-        <param name="pose_twist_out_topic" value="clik/desired_pose_twist" />
-
-        <param name="pose_out_topic" value="clik/desired_pose" />
-        <param name="twist_out_topic" value="clik/desired_twist" />
-
-        <param name="action_name" value="cartesian_traj_action" />
-        <param name="use_realtime" value="$(arg use_realtime)" />
-    </node>
-
-    <node if="$(arg bringup_fkine_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="iiwa_clik" args="load sun_iiwa_nodes/IIWA_FkineNodelet /$(arg nodelet_name)" output="screen"></node>
-
+  
     <!-- CLik -->
     <node if="$(arg bringup_clik_server)" ns="iiwa/clik" pkg="nodelet" type="nodelet" name="iiwa_clik" args="load sun_iiwa_fri_nodes/IIWA_ClikNodelet /$(arg nodelet_name)" output="screen">
 

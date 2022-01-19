@@ -75,9 +75,15 @@ public:
         ros::topic::waitForMessage<sun_iiwa_fri::IIWACommand>(
             joint_state_topic_str_, nh_, ros::Duration(1.0));
     if (!msg) {
-      ROS_ERROR_STREAM("getJointPositionRobot NO MSG!");
-      exit(-1);
+      ROS_WARN_STREAM("getJointPositionRobot waiting 15 sec...");
+      msg = ros::topic::waitForMessage<sun_iiwa_fri::IIWACommand>(
+          joint_state_topic_str_, nh_, ros::Duration(15.0));
+      if (!msg) {
+        ROS_ERROR_STREAM("getJointPositionRobot NO MSG!");
+        exit(-1);
+      }
     }
+
     qR[0] = msg->joint_position[0];
     qR[1] = msg->joint_position[1];
     qR[2] = msg->joint_position[2];
