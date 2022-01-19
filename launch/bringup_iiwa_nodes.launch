@@ -4,6 +4,8 @@
 
     <arg name="sample_time" default="0.003" />
 
+    <arg name="driver_filter_cut_time_over_Ts" default="2.0" />
+
     <arg name="nodelet_name" default="iiwa_nodelet" />
 
     <arg name="bringup_joint_traj_server" default="true" />
@@ -37,6 +39,7 @@
     <node if="$(arg bringup_fri_driver)" ns="iiwa" pkg="nodelet" type="nodelet" name="fri_driver" args="load sun_iiwa_fri/FRIDriverNodelet /$(arg nodelet_name)" output="screen">
         <param name="sample_time" value="$(arg sample_time)" />
         <param name="use_realtime" value="$(arg use_realtime)" />
+        <param name="filter_cut_time_over_Ts" value="$(arg driver_filter_cut_time_over_Ts)" />
     </node>
 
     <!-- Traj Server -->
