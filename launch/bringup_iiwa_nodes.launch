@@ -8,6 +8,10 @@
 
     <arg name="nodelet_name" default="iiwa_nodelet" />
 
+    <arg name="clik_pub_robot_jacobian" default="false" />
+
+    <arg name="fkine_rate" default="-1.0" />
+
     <arg name="bringup_joint_traj_server" default="true" />
 
     <arg name="bringup_cartesian_traj_server" default="true" />
@@ -33,7 +37,7 @@
 
     <arg name="rate" value="$(eval 1.0/arg('sample_time'))" />
 
-    <node pkg="nodelet" type="nodelet" name="$(arg nodelet_name)" args="manager" output="screen"/>
+    <node pkg="nodelet" type="nodelet" name="$(arg nodelet_name)" args="manager" output="screen" />
 
     <!-- Driver -->
     <node if="$(arg bringup_fri_driver)" ns="iiwa" pkg="nodelet" type="nodelet" name="fri_driver" args="load sun_iiwa_fri/FRIDriverNodelet /$(arg nodelet_name)" output="screen">
@@ -62,12 +66,17 @@
         <param name="use_realtime" value="$(arg use_realtime)" />
     </node>
 
-    <node if="$(arg bringup_fkine_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="iiwa_clik" args="load sun_iiwa_nodes/IIWA_FkineNodelet /$(arg nodelet_name)" output="screen"></node>
+    <node if="$(arg bringup_fkine_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="iiwa_clik" args="load sun_iiwa_fri_nodes/IIWA_FkineNodelet /$(arg nodelet_name)" output="screen">
+        <param name="rate" value="$(arg fkine_rate)" />
+    </node>
 
     <!-- CLik -->
     <node if="$(arg bringup_clik_server)" ns="iiwa/clik" pkg="nodelet" type="nodelet" name="iiwa_clik" args="load sun_iiwa_fri_nodes/IIWA_ClikNodelet /$(arg nodelet_name)" output="screen">
+        <!-- <node if="$(arg bringup_clik_server)" ns="iiwa/clik" pkg="sun_iiwa_fri_nodes" type="iiwa_clik" name="iiwa_clik" output="screen"> -->
 
         <param name="use_realtime" value="$(arg use_realtime)" />
+
+        <param name="pub_robot_jacobian" value="$(arg clik_pub_robot_jacobian)" />
 
         <param name="pub_dbg" value="false" />
 
