@@ -137,6 +137,14 @@ target_link_libraries(iiwa_clik_nodelet
 ${catkin_LIBRARIES}
 )
 
+add_library(iiwa_piv_clik_nodelet
+  src/${PROJECT_NAME}/IIWA_piv_ClikNodelet.cpp
+)
+add_dependencies(iiwa_piv_clik_nodelet ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(iiwa_piv_clik_nodelet
+${catkin_LIBRARIES}
+)
+
 add_executable(iiwa_clik src/iiwa_clik_node.cpp)
 add_dependencies(iiwa_clik ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(iiwa_clik
