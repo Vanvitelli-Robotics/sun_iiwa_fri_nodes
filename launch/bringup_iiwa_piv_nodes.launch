@@ -22,7 +22,7 @@
 
     <arg name="bringup_fri_driver" default="true" />
 
-    <arg name="clik_error_gain" default="0.5" />
+    <arg name="clik_error_gain" default="1.0" />
 
     <arg name="dls_joint_speed_saturation" default="3.0" />
 
@@ -69,7 +69,7 @@
         <param name="use_realtime" value="$(arg use_realtime)" />
     </node>
 
-    <node if="$(arg bringup_fkine_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="iiwa_clik" args="load sun_iiwa_fri_nodes/IIWA_FkineNodelet /$(arg nodelet_name)" output="screen">
+    <node if="$(arg bringup_fkine_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="iiwa_fkine" args="load sun_iiwa_fri_nodes/IIWA_FkineNodelet /$(arg nodelet_name)" output="screen">
         <param name="rate" value="$(arg fkine_rate)" />
         <param name="out_pose" value="/iiwa/wsg50/ee_pose"/>
 
