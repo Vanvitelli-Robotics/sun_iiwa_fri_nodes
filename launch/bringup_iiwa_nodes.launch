@@ -68,6 +68,8 @@
 
     <node if="$(arg bringup_fkine_server)" ns="iiwa" pkg="nodelet" type="nodelet" name="iiwa_fkine" args="load sun_iiwa_fri_nodes/IIWA_FkineNodelet /$(arg nodelet_name)" output="screen">
         <param name="rate" value="$(arg fkine_rate)" />
+        <param name="base_frame_id" value="iiwa_link_0" />
+        <param name="ee_frame_id" value="iiwa_link_ee" />
     </node>
 
     <!-- CLik -->
