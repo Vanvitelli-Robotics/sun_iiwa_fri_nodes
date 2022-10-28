@@ -45,16 +45,16 @@ public:
     qR[5] = joi_state_msg->position[5];
     qR[6] = joi_state_msg->position[6];
 
-    // qdotR[0] = joi_state_msg->velocity[0];
-    // qdotR[1] = joi_state_msg->velocity[1];
-    // qdotR[2] = joi_state_msg->velocity[2];
-    // qdotR[3] = joi_state_msg->velocity[3];
-    // qdotR[4] = joi_state_msg->velocity[4];
-    // qdotR[5] = joi_state_msg->velocity[5];
-    // qdotR[6] = joi_state_msg->velocity[6];
+    qdotR[0] = joi_state_msg->velocity[0];
+    qdotR[1] = joi_state_msg->velocity[1];
+    qdotR[2] = joi_state_msg->velocity[2];
+    qdotR[3] = joi_state_msg->velocity[3];
+    qdotR[4] = joi_state_msg->velocity[4];
+    qdotR[5] = joi_state_msg->velocity[5];
+    qdotR[6] = joi_state_msg->velocity[6];
 
     updateJoint(qR);
-    // updateJointVel(qdotR);
+    updateJointVel(qdotR);
 
     publishAll();
   }
